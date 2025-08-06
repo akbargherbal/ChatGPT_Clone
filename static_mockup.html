@@ -3,164 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Assistant Chatbot - Polished Mockup</title>
+    <title>AI Assistant Chatbot - Final Mockup</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        /* Ensures smooth transitions for transforms and opacity */
-        .transition-all {
-            transition: all 0.3s ease-in-out;
-        }
-        /* Custom scrollbar for a cleaner look in webkit browsers */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #2d3748; /* dark:bg-gray-700 */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4a5568; /* dark:bg-gray-600 */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #718096; /* dark:bg-gray-500 */
-        }
+        .transition-all { transition: all 0.3s ease-in-out; }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans">
     <div
-        x-data="{ leftSidebarOpen: window.innerWidth > 1024, rightSidebarOpen: false }"
+        x-data="{
+            leftSidebarOpen: window.innerWidth > 1024,
+            rightSidebarOpen: false,
+            selectedModel: 'pro',
+            zenMode: false,
+            proTheme: {
+                name: 'pro',
+                icon: '💎', /* Changed Icon */
+                accentColor: 'indigo',
+                chatBg: 'bg-gray-100 dark:bg-gray-900',
+                aiMessageBg: 'bg-white dark:bg-gray-800',
+                userMessageBg: 'bg-indigo-600',
+                sendButtonBg: 'bg-indigo-600 hover:bg-indigo-700',
+                radioRing: 'focus:ring-indigo-500 text-indigo-600'
+            },
+            flashTheme: {
+                name: 'flash',
+                icon: '⚡️',
+                accentColor: 'cyan',
+                chatBg: 'bg-gradient-to-br from-white to-cyan-50 dark:from-gray-900 dark:to-teal-900/40',
+                aiMessageBg: 'bg-white dark:bg-gray-800 border-l-4 border-cyan-400 shadow-lg',
+                userMessageBg: 'bg-cyan-600',
+                sendButtonBg: 'bg-cyan-600 hover:bg-cyan-700',
+                radioRing: 'focus:ring-cyan-500 text-cyan-500'
+            },
+            get activeTheme() { return this.selectedModel === 'pro' ? this.proTheme : this.flashTheme; }
+        }"
         @resize.window="if (window.innerWidth > 1024) leftSidebarOpen = true"
         class="relative min-h-screen flex"
     >
-        <!-- Overlay for mobile -->
-        <div
-            x-show="leftSidebarOpen || rightSidebarOpen"
-            x-transition:enter="transition-opacity ease-linear duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition-opacity ease-linear duration-300"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            @click="leftSidebarOpen = false; rightSidebarOpen = false"
-            class="fixed inset-0 bg-black/50 z-30 lg:hidden"
-            x-cloak
-        ></div>
+        <!-- Persistent Gear Icon -->
+        <div class="fixed top-4 right-4 z-50">
+            <button
+                @click="zenMode ? (zenMode = false, rightSidebarOpen = true) : rightSidebarOpen = !rightSidebarOpen"
+                class="h-12 w-12 rounded-full bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all"
+                title="Toggle Settings"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </button>
+        </div>
 
         <!-- Left Sidebar -->
-        <aside
-            class="flex-shrink-0 w-64 bg-gray-800 text-gray-300 flex flex-col z-40 fixed lg:static inset-y-0 left-0 transition-all"
-            :class="{ '-translate-x-full': !leftSidebarOpen }"
-            x-cloak
-        >
+        <aside x-show="!zenMode" :class="{ '-translate-x-full': !leftSidebarOpen }" class="flex-shrink-0 w-64 bg-gray-800 text-gray-300 flex flex-col z-40 fixed lg:static inset-y-0 left-0 transition-all" x-transition x-cloak>
             <div class="h-16 flex items-center justify-between px-4 border-b border-gray-700 flex-shrink-0">
                 <a href="#" class="font-bold text-xl">AI Assistant</a>
-                <button @click="leftSidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white" title="Close sidebar">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
             </div>
-            <div class="flex-1 overflow-y-auto">
-                <nav class="px-2 py-4">
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-md bg-gray-700 text-white">
-                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        New Chat
-                    </a>
-                    <div class="mt-6">
-                        <h3 class="px-4 text-xs text-gray-500 uppercase tracking-wider">Recent</h3>
-                        <div class="mt-2 space-y-1">
-                            <a href="#" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-700 truncate">Explain static websites</a>
-                            <a href="#" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-700 truncate">What is Tailwind CSS?</a>
-                            <a href="#" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-700 truncate">AlpineJS for beginners</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-            <div class="p-4 border-t border-gray-700 flex-shrink-0">
-                <a href="#" class="flex items-center w-full px-4 py-2 text-sm rounded-md hover:bg-gray-700">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3"></path></svg>
-                    Logout
-                </a>
-            </div>
+            <div class="flex-1 overflow-y-auto"><nav class="px-2 py-4"><a href="#" class="flex items-center px-4 py-2 text-sm rounded-md bg-gray-700 text-white">New Chat</a></nav></div>
+            <div class="p-4 border-t border-gray-700 flex-shrink-0"><a href="#" class="flex items-center w-full px-4 py-2 text-sm rounded-md hover:bg-gray-700">Logout</a></div>
         </aside>
 
         <!-- Main content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="h-16 flex items-center justify-between px-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700 flex-shrink-0">
-                <button @click="leftSidebarOpen = !leftSidebarOpen" class="lg:hidden text-gray-500 dark:text-gray-400 focus:outline-none hover:text-gray-700 dark:hover:text-gray-200" title="Open sidebar">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-                <div class="font-semibold text-xl">ChatGPT Clone</div>
-                <button @click="rightSidebarOpen = !rightSidebarOpen" class="text-gray-500 dark:text-gray-400 focus:outline-none hover:text-gray-700 dark:hover:text-gray-200" title="Toggle settings">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                </button>
+            <header x-show="!zenMode" class="h-16 flex items-center justify-between px-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700 flex-shrink-0 transition-all" x-transition x-cloak>
+                <button @click="leftSidebarOpen = !leftSidebarOpen" class="lg:hidden text-gray-500 focus:outline-none" title="Open sidebar"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+                <div class="flex items-center gap-2 font-semibold text-xl" :class="`text-${activeTheme.accentColor}-600 dark:text-${activeTheme.accentColor}-400`">
+                    <span x-text="activeTheme.icon"></span>
+                    <span x-text="selectedModel === 'pro' ? 'Gemini Pro' : 'Gemini Flash'"></span>
+                </div>
+                <div class="w-6"></div>
             </header>
 
             <!-- Chat area -->
-            <main class="flex-1 overflow-y-auto p-4 md:p-6">
+            <main class="flex-1 overflow-y-auto p-4 md:p-6 transition-all" :class="activeTheme.chatBg">
                 <div class="space-y-6 max-w-4xl mx-auto">
-                    <!-- User Message -->
-                    <div class="flex items-start justify-end">
-                        <div class="mr-4 p-4 rounded-lg bg-blue-500 text-white shadow-md max-w-lg">
-                            <p class="text-sm">Can you explain what a static website is?</p>
-                        </div>
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center font-bold">U</div>
-                    </div>
-                    
-                    <!-- AI Message -->
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center font-bold text-white">AI</div>
-                        <div class="ml-4 p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md max-w-lg prose prose-sm dark:prose-invert">
-                            <p>Of course! A static website is delivered to a user's web browser exactly as it's stored. It consists of pre-rendered files (HTML, CSS, JavaScript) where the content is fixed and doesn't change based on user interaction or other data.</p>
-                            <p>Key characteristics include:</p>
-                            <ul>
-                                <li><strong>Performance:</strong> They are generally very fast because they are just simple files served from a Content Delivery Network (CDN).</li>
-                                <li><strong>Security:</strong> With no database or complex server-side processing, there are fewer attack vectors, making them highly secure.</li>
-                                <li><strong>Simplicity & Cost:</strong> They are often easier and cheaper to develop and host.</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="flex items-start justify-end"><div class="mr-4 p-4 rounded-lg text-white shadow-md max-w-lg transition-all" :class="activeTheme.userMessageBg"><p class="text-sm">How do I start a new project with Tailwind CSS?</p></div><div class="flex-shrink-0 w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center font-bold">U</div></div>
+                    <div class="flex items-start"><div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-all" :class="`bg-${activeTheme.accentColor}-500`">AI</div><div class="ml-4 p-4 rounded-lg max-w-lg prose prose-sm dark:prose-invert transition-all" :class="activeTheme.aiMessageBg"><p>Great question! Starting a new Tailwind CSS project is straightforward. The recommended way is to use the Tailwind CLI.</p></div></div>
                 </div>
             </main>
 
             <!-- Input area -->
-            <footer class="p-4 md:p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t dark:border-gray-700 flex-shrink-0">
+            <footer class="p-4 md:p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t dark:border-gray-700 flex-shrink-0" :class="{ 'rounded-t-xl': zenMode }">
                 <div class="max-w-4xl mx-auto">
                     <div class="relative">
-                        <textarea rows="1" placeholder="Message AI Assistant..." class="w-full pl-4 pr-16 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"></textarea>
-                        <button class="absolute bottom-2.5 right-2.5 flex items-center justify-center h-10 w-10 rounded-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none disabled:opacity-50" title="Send message">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-                        </button>
+                        <textarea
+                            rows="1"
+                            placeholder="Message AI Assistant..."
+                            class="w-full pl-4 pr-16 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 focus:outline-none resize-none max-h-48"
+                            :class="`focus:ring-2 focus:ring-${activeTheme.accentColor}-500`"
+                            oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        ></textarea>
+                        <button class="absolute bottom-2.5 right-2.5 flex items-center justify-center h-10 w-10 rounded-md text-white focus:outline-none transition-all" :class="activeTheme.sendButtonBg" title="Send message"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg></button>
                     </div>
-                    <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">AI Assistant can make mistakes. Consider checking important information.</p>
                 </div>
             </footer>
         </div>
 
         <!-- Right Sidebar -->
-        <aside
-            class="flex-shrink-0 w-64 bg-gray-800 text-gray-300 flex flex-col z-40 fixed inset-y-0 right-0 transition-all"
-            :class="{ 'translate-x-full': !rightSidebarOpen }"
-            x-cloak
-        >
+        <aside class="flex-shrink-0 w-64 bg-gray-800 text-gray-300 flex flex-col z-40 fixed inset-y-0 right-0 transition-all" :class="{ 'translate-x-full': !rightSidebarOpen }" x-cloak>
             <div class="h-16 flex items-center justify-between px-4 border-b border-gray-700 flex-shrink-0">
-                <h3 class="font-bold text-lg">Fine-Tune</h3>
-                <button @click="rightSidebarOpen = false" class="text-gray-400 hover:text-white" title="Close settings">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+                <h3 class="font-bold text-lg">Settings</h3>
+                <button @click="rightSidebarOpen = false" class="text-gray-400 hover:text-white" title="Close settings"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
             <div class="flex-1 overflow-y-auto p-4 space-y-6">
-                <div>
-                    <label for="temperature" class="block text-sm font-medium text-gray-400">Temperature</label>
-                    <p class="text-xs text-gray-500 mb-2">Controls randomness. Lower is more deterministic.</p>
-                    <input type="range" id="temperature" name="temperature" min="0" max="1" step="0.1" value="0.7" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                    <div class="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>Precise</span>
-                        <span>Creative</span>
-                    </div>
-                </div>
+                <div><div class="flex items-center justify-between"><label for="zen-mode" class="text-sm font-medium text-gray-300">Zen Mode</label><button @click="zenMode = !zenMode" id="zen-mode" class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors" :class="zenMode ? 'bg-green-500' : 'bg-gray-600'"><span class="inline-block w-4 h-4 transform bg-white rounded-full transition-transform" :class="{ 'translate-x-6': zenMode, 'translate-x-1': !zenMode }"></span></button></div></div>
+                <div class="border-t border-gray-700 pt-4"><label class="block text-sm font-medium text-gray-400">Model</label><div class="mt-2 space-y-2"><div class="flex items-center"><input x-model="selectedModel" id="gemini-pro" type="radio" value="pro" class="h-4 w-4 border-gray-500 bg-gray-700" :class="proTheme.radioRing"><label for="gemini-pro" class="ml-3 flex items-center gap-2 text-sm font-medium text-gray-300">💎 Gemini Pro</label></div><div class="flex items-center"><input x-model="selectedModel" id="gemini-flash" type="radio" value="flash" class="h-4 w-4 border-gray-500 bg-gray-700" :class="flashTheme.radioRing"><label for="gemini-flash" class="ml-3 flex items-center gap-2 text-sm font-medium text-gray-300">⚡️ Gemini Flash</label></div></div></div>
             </div>
         </aside>
+
+        <!-- Overlay -->
+        <div x-show="(leftSidebarOpen && !zenMode && window.innerWidth < 1024) || rightSidebarOpen" x-transition.opacity.300ms @click="leftSidebarOpen = false; rightSidebarOpen = false" class="fixed inset-0 bg-black/50 z-30" x-cloak></div>
     </div>
 </body>
 </html>
+
+<!-- 
+DON'T REMOVE THIS COMMENT:
+
+### Current Mockup Features:
+
+*   **API Key Management:** Users can enter their Google AI API key into a secure, masked password field located in the settings panel.
+*   **Dual Model Selection:** The interface allows users to choose between two distinct AI models: the powerful "Gemini Pro" (💎) and the fast "Gemini Flash" (⚡️).
+*   **Dynamic Theming:** The entire user interface theme, including colors and backgrounds, automatically updates to reflect the selected model, providing immediate visual context for the AI's capabilities.
+*   **Zen Mode:** A dedicated "Zen Mode" can be toggled on to hide all non-essential UI elements (sidebars, header), creating a clutter-free, fully focused chat environment.
+*   **Persistent Settings Control:** A global gear icon remains accessible at all times, ensuring users can always toggle the settings panel or exit Zen Mode without getting stuck.
+*   **Auto-Expanding Text Input:** The user message box starts as a single line and automatically grows in height to accommodate multi-line text, with a scrollbar appearing after reaching a maximum size.
+*   **Fully Responsive Design:** The layout is designed to work seamlessly across desktop and mobile devices, with intelligent, collapsible sidebars and an overlay for smaller screens.
+
+
+### Future Todos:
+1 - Zen Mode could be toggled on/off using keyboard shortcut; choose a good key for that.
+
+2 - 
+-->
