@@ -1,42 +1,44 @@
 # Gemini CLI Master Instructions: AI Chatbot MVP
 
-## 1. Mandated Technology Stack
+## 1. Core Protocols (The Constitution)
 
-The agent MUST use the following technologies exclusively:
+_This section contains the permanent rules for the agent's behavior across all sessions._
 
-- **Backend:** Python with **FastAPI**.
-- **Frontend Interaction:** **HTMX**.
-- **Client-Side Scripting:** **Alpine.js** (for minimal UI state only).
-- **Styling:** **Tailwind CSS**.
+### 1.1. Environment Setup Protocol
 
-## 2. Guiding Constraints
+- You MUST check for a `.venv` directory. If it does not exist, you MUST create it by running `python -m venv .venv`.
+- You MUST use the virtual environment's executables for all `pip` or `python` commands.
 
-- **Simplicity:** Code must be direct and avoid unnecessary complexity.
-- **Stateless Backend:** The FastAPI application should be stateless. State is managed client-side in the browser.
-- **HTMX-Driven:** All core chat interactions (sending/receiving messages) MUST be handled via HTMX requests that return HTML fragments.
+### 1.2. Agent Changelog Protocol
 
-## 3. Release 0.1.0: Implementation & Verification
+- **MANDATORY:** After successfully completing the main task, if it does not exist, create a file named `agent_changelog.md`. You MUST then append a new entry to this file.
+- The entry must be in Markdown and follow this exact format:
+  ### YYYY-MM-DD HH:MM
+  - **What:** [A brief, one-sentence description of the change.]
+  - **Why:** [A brief justification for why the change was necessary.]
+  - **Files Touched:** [`file1.py`, `file2.html`]
 
-The goal is to implement a fully functional backend for the provided `static_mockup.html`.
+## 2. Project Architecture (The Law of the Land)
 
-### 3.1. Required Features:
+_This section defines the non-negotiable technical and structural rules for this specific project._
 
-- **FastAPI Endpoint (`/chat`):**
-  - Must accept a `POST` request.
-  - Must expect a JSON body containing: `message: str`, `api_key: str`, and `model: str` (either "pro" or "flash").
-  - Must return an HTML fragment representing the AI's response message bubble.
-- **API Key Persistence:**
-  - The application logic (managed by Alpine.js) must save the Google AI API key to the browser's `localStorage` when entered.
-  - It must load the API key from `localStorage` on page load, if it exists.
-- **Chat Functionality:**
-  - The main textarea's input must be sent to the backend via an HTMX `POST` request.
-  - The HTML response from the server must be correctly appended to the chat display area.
+- **Mandated Technology Stack:** FastAPI, HTMX, Alpine.js, Tailwind CSS.
+- **Architectural Constraints:** The backend (`main.py`) must only handle data and logic. It should not contain frontend-specific layout or styling information. The backend is considered complete and correct, verified by the tests in `tests/test_main.py`.
 
-### 3.2. Verification Protocol (Tests):
+## 3. Current Task (The Executive Order)
 
-The implementation is only considered complete when the following tests pass.
+_This section is specific to the current session._
 
-- **Backend Unit Tests:**
-  - A test that verifies the `/chat` endpoint returns a `200 OK` status and a valid HTML fragment when given a valid request and a mocked successful API call.
-  - A test that verifies the endpoint returns an appropriate HTTP error (e.g., `400 Bad Request`) if `message` or `api_key` is missing from the request.
-  - A test that simulates a failure from the external Google AI API and ensures the endpoint handles the error gracefully (e.g., returns an error message HTML fragment).
+- **Context & State Analysis:** The application is currently non-functional.
+
+  1.  **Critical Bug:** Submitting a chat message from the UI results in a `Response Status Error Code 422 from /chat` in the browser console. This is caused by a data mismatch between the HTML form's `name` attributes in `static_mockup.html` and the keys expected by the `ChatRequest` Pydantic model in `main.py`.
+  2.  **Enhancement Required:** The `get_gemini_response` function in `main.py` is using outdated Google AI model names.
+
+- **This Session's Objective:** Resolve both the critical bug and the model name issue to make the application fully functional as per Release 0.1.0, and then log the changes.
+
+- **Task Directive:**
+  - **Your primary task is to fix the `422` error.** You must modify `static_mockup.html` and/or `main.py` to ensure the data sent from the frontend form correctly matches the structure expected by the backend.
+  - **Your secondary task is to update the model names.** In `main.py`, you must change the model strings to use the latest production versions: `gemini-2.5-pro` and `gemini-2.5-flash`.
+  - The final implementation must result in a working chat application where a user can send a message and receive a response.
+  - The test suite in `tests/test_main.py` MUST pass after your changes.
+  - Finally, you MUST create and/or update the `agent_changelog.md` file with a summary of the changes you made, as per the protocol.
