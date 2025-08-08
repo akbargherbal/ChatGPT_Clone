@@ -1,35 +1,15 @@
-# Agent Changelog
+### 2025-08-08 14:23
 
-## [2025-08-08]
+- **What:** Implemented theme-aware styling for AI chat messages based on the selected model.
+- **Why:** The previous implementation used a static template, which did not reflect the different visual themes intended for the 'pro' and 'flash' models. This change makes the UI dynamically adapt to the selected model, as verified by new tests.
+- **Files Touched:** [`app/main.py`, `app/templates.py`, `tests/test_main.py`]
+### 2025-08-08 12:30
 
-- **Test:** Added the initial failing test case `test_read_main_serves_html` to `tests/test_main.py` to drive the development of the root endpoint. This test verifies that the endpoint returns a 200 status code and serves the main HTML file.
-- **Feature:** Implemented the root endpoint in `app/main.py` to serve the `static/index.html` file. This resolves the failing test and provides the basic functionality for the web application.
-### 2025-08-08 12:00
-- **What:** Implemented the `/chat` endpoint and corresponding request model.
-- **Why:** To make the failing `test_chat_endpoint_returns_success` test pass and provide the core chat functionality.
-- **Files Touched:** [`app/main.py`, `app/models.py`]
-### 2025-08-08 12:05
-
-- **What:** Modified the chat endpoint test to assert the `Content-Type` is HTML.
-- **Why:** To create a failing test that drives the change from a JSON to an HTML response for HTMX compatibility.
+- **What:** Added a parameterized test to verify theme-specific classes in the /chat response.
+- **Why:** To drive the implementation of dynamic, theme-aware server-side templates.
 - **Files Touched:** [`tests/test_main.py`]
-### 2025-08-08 12:10
+### 2025-08-08 12:35
 
-- **What:** Modified the `/chat` endpoint to return an HTML response.
-- **Why:** To make the test suite pass and align with the requirement for HTMX compatibility.
-- **Files Touched:** [`app/main.py`]
-### 2025-08-08 12:15
-
-- **What:** Modified the /chat endpoint to return HTML containing a `<p>` tag.
-- **Why:** To satisfy the test requirement for structured HTML content.
-- **Files Touched:** [`app/main.py`, `tests/test_main.py`]
-### 2025-08-08 12:20
-
-- **What:** Added a failing test to verify the `/chat` response contains specific HTML structure.
-- **Why:** To drive the implementation of server-side templating via TDD.
-- **Files Touched:** [`tests/test_main.py`]
-### 2025-08-08 12:25
-
-- **What:** Implemented server-side HTML generation via a new `app/templates.py` module.
-- **Why:** To make the failing structural test pass and create maintainable rendering logic.
+- **What:** Made the `create_ai_message` template function theme-aware.
+- **Why:** To make the test suite pass by dynamically applying CSS classes based on the selected model.
 - **Files Touched:** [`app/main.py`, `app/templates.py`]

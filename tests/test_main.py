@@ -10,14 +10,14 @@ def test_read_main_serves_html():
 
 def test_chat_endpoint_returns_success():
     client = TestClient(app)
-    response = client.post("/chat", json={"user_message": "Hello", "selectedModel": "pro"})
+    response = client.post("/chat", data={"user_message": "Hello", "selectedModel": "pro"})
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert "<p>" in response.text
 
 def test_chat_endpoint_returns_correct_html_structure():
     client = TestClient(app)
-    response = client.post("/chat", json={"user_message": "Hello", "selectedModel": "pro"})
+    response = client.post("/chat", data={"user_message": "Hello", "selectedModel": "pro"})
     assert response.status_code == 200
     assert 'class="ml-4 p-4 rounded-lg' in response.text
 
@@ -30,5 +30,11 @@ def test_chat_endpoint_returns_correct_html_structure():
 )
 def test_chat_endpoint_is_theme_aware(model_name, expected_class):
     client = TestClient(app)
-    response = client.post("/chat", json={"user_message": "test", "selectedModel": model_name})
+    response = client.post("/chat", data={"user_message": "test", "selectedModel": model_name})
     assert expected_class in response.text
+
+def test_chat_endpoint_echoes_user_message():
+    client = TestClient(app)
+    user_message = "Testing the echo."
+    response = client.post("/chat", data={"user_message": user_message, "selectedModel": "pro"})
+    assert user_message in response.text
