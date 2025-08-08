@@ -23,3 +23,13 @@
 - **What:** Modified the /chat endpoint to return HTML containing a `<p>` tag.
 - **Why:** To satisfy the test requirement for structured HTML content.
 - **Files Touched:** [`app/main.py`, `tests/test_main.py`]
+### 2025-08-08 12:20
+
+- **What:** Added a failing test to verify the `/chat` response contains specific HTML structure.
+- **Why:** To drive the implementation of server-side templating via TDD.
+- **Files Touched:** [`tests/test_main.py`]
+### 2025-08-08 12:25
+
+- **What:** Implemented server-side HTML generation via a new `app/templates.py` module.
+- **Why:** To make the failing structural test pass and create maintainable rendering logic.
+- **Files Touched:** [`app/main.py`, `app/templates.py`]
