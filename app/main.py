@@ -16,5 +16,8 @@ async def read_index():
 @app.post("/chat")
 async def chat(chat_request: ChatRequest):
     # Using the new template function to generate the response
-    ai_message_html = create_ai_message("This is a placeholder response from the AI.")
+    ai_message_html = create_ai_message(
+        "This is a placeholder response from the AI.", 
+        chat_request.selectedModel
+    )
     return HTMLResponse(content=ai_message_html)
