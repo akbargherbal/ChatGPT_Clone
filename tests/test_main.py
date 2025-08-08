@@ -6,3 +6,8 @@ def test_read_main_serves_html():
     response = client.get("/")
     assert response.status_code == 200
     assert "<title>AI Assistant Chatbot - Final Mockup</title>" in response.text
+
+def test_chat_endpoint_returns_success():
+    client = TestClient(app)
+    response = client.post("/chat", json={"user_message": "Hello", "selectedModel": "pro"})
+    assert response.status_code == 200
