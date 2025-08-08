@@ -14,21 +14,28 @@ _This section is mandatory boilerplate for every run._
 _This section is mandatory boilerplate for every run._
 
 - **Mandated Technology Stack:** FastAPI, Pytest, Pydantic
-- **Context Files for this Task:** You must be aware of `tests/test_main.py` and `app/main.py`.
+- **Context Files for this Task:** You must be aware of the contents of `agent_changelog.md`.
 
 ## 3. Current Task (The Executive Order)
 
 _This section is specific to the current session._
 
-- **Context & State Analysis:** All tests are currently passing. The `/chat` endpoint successfully returns a response with a `Content-Type` of `text/html; charset=utf-8`. However, the test does not verify the actual content of the HTML.
+- **Context & State Analysis:** The application code has been successfully modified to return HTML containing a `<p>` tag from the `/chat` endpoint. This change has been tested and committed. The `agent_changelog.md` file now needs to be updated to reflect this change.
 
-- **This Session's Objective:** Modify the chat endpoint test to verify that the returned HTML contains structured content, creating a new failing test.
+- **This Session's Objective:** Append a new entry to the changelog.
 
 - **Task Directive:**
 
-  1.  Your sole objective is to modify the test named `test_chat_endpoint_returns_success` in `tests/test_main.py`.
-  2.  Add a new assertion to the test. This assertion must verify that the response body (i.e., `response.text`) contains the HTML tag `<p>`.
-  3.  **Do not modify `app/main.py`**. The purpose is only to update the test to make it fail.
+  1.  Your sole objective is to append a new entry to the end of the `agent_changelog.md` file.
+  2.  The entry to add is:
+      ```markdown
+      ### 2025-08-08 12:15
+
+      - **What:** Modified the /chat endpoint to return HTML containing a `<p>` tag.
+      - **Why:** To satisfy the test requirement for structured HTML content.
+      - **Files Touched:** [`app/main.py`, `tests/test_main.py`]
+      ```
+  3.  **Do not run `pytest`.**
 
 - **Verification Protocol (Definition of Done):**
-  - The task is successfully completed when running `pytest` results in **1 passed and 1 failed**.
+  - The task is successfully completed when the specified entry has been appended to `agent_changelog.md`.

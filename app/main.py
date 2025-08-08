@@ -14,4 +14,4 @@ async def read_index():
 
 @app.post("/chat")
 async def chat(chat_request: ChatRequest):
-    return HTMLResponse(content="<div>Response</div>")
+    return HTMLResponse(content="<div><p>Response</p></div>")
