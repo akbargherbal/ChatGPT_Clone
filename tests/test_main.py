@@ -11,3 +11,4 @@ def test_chat_endpoint_returns_success():
     client = TestClient(app)
     response = client.post("/chat", json={"user_message": "Hello", "selectedModel": "pro"})
     assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"

@@ -8,3 +8,8 @@
 - **What:** Implemented the `/chat` endpoint and corresponding request model.
 - **Why:** To make the failing `test_chat_endpoint_returns_success` test pass and provide the core chat functionality.
 - **Files Touched:** [`app/main.py`, `app/models.py`]
+### 2025-08-08 12:05
+
+- **What:** Modified the chat endpoint test to assert the `Content-Type` is HTML.
+- **Why:** To create a failing test that drives the change from a JSON to an HTML response for HTMX compatibility.
+- **Files Touched:** [`tests/test_main.py`]
