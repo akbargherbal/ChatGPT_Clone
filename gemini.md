@@ -1,44 +1,37 @@
-# Gemini CLI Master Instructions: AI Chatbot MVP
+# Gemini CLI Master Instructions: AI Chatbot POC
 
 ## 1. Core Protocols (The Constitution)
 
-_This section contains the permanent rules for the agent's behavior across all sessions._
-
 ### 1.1. Environment Setup Protocol
 
-- You MUST check for a `.venv` directory. If it does not exist, you MUST create it by running `python -m venv .venv`.
-- You MUST use the virtual environment's executables for all `pip` or `python` commands.
+- You MUST ensure all dependencies from `requirements.txt` are installed in the `.venv` before running any tests.
 
 ### 1.2. Agent Changelog Protocol
 
-- **MANDATORY:** After successfully completing the main task, if it does not exist, create a file named `agent_changelog.md`. You MUST then append a new entry to this file.
-- The entry must be in Markdown and follow this exact format:
-  ### YYYY-MM-DD HH:MM
-  - **What:** [A brief, one-sentence description of the change.]
-  - **Why:** [A brief justification for why the change was necessary.]
-  - **Files Touched:** [`file1.py`, `file2.html`]
+- **MANDATORY:** After successfully completing the main task, you MUST append a new entry to the `agent_changelog.md` file in the specified format.
 
 ## 2. Project Architecture (The Law of the Land)
 
-_This section defines the non-negotiable technical and structural rules for this specific project._
-
-- **Mandated Technology Stack:** FastAPI, HTMX, Alpine.js, Tailwind CSS.
-- **Architectural Constraints:** The backend (`main.py`) must only handle data and logic. It should not contain frontend-specific layout or styling information. The backend is considered complete and correct, verified by the tests in `tests/test_main.py`.
+- **Mandated Technology Stack:** FastAPI, Pytest, HTMX
+- **Context Files for this Task:** You must be aware of the following files: `app/main.py` (which is currently empty) and `tests/test_main.py` (also empty).
 
 ## 3. Current Task (The Executive Order)
 
-_This section is specific to the current session._
+- **Context & State Analysis:** The project has a complete, version-controlled file structure. All Python files in `app/` are empty. The goal is to begin implementing the first feature using a strict Test-Driven Development (TDD) approach.
 
-- **Context & State Analysis:** The application is currently non-functional.
-
-  1.  **Critical Bug:** Submitting a chat message from the UI results in a `Response Status Error Code 422 from /chat` in the browser console. This is caused by a data mismatch between the HTML form's `name` attributes in `static_mockup.html` and the keys expected by the `ChatRequest` Pydantic model in `main.py`.
-  2.  **Enhancement Required:** The `get_gemini_response` function in `main.py` is using outdated Google AI model names.
-
-- **This Session's Objective:** Resolve both the critical bug and the model name issue to make the application fully functional as per Release 0.1.0, and then log the changes.
+- **This Session's Objective:** Write the first failing test case. This test will define the requirements for our root endpoint, which must serve the main HTML file.
 
 - **Task Directive:**
-  - **Your primary task is to fix the `422` error.** You must modify `static_mockup.html` and/or `main.py` to ensure the data sent from the frontend form correctly matches the structure expected by the backend.
-  - **Your secondary task is to update the model names.** In `main.py`, you must change the model strings to use the latest production versions: `gemini-2.5-pro` and `gemini-2.5-flash`.
-  - The final implementation must result in a working chat application where a user can send a message and receive a response.
-  - The test suite in `tests/test_main.py` MUST pass after your changes.
-  - Finally, you MUST create and/or update the `agent_changelog.md` file with a summary of the changes you made, as per the protocol.
+
+  1.  You are to modify **only one file**: `tests/test_main.py`.
+  2.  Add a test function named `test_read_main_serves_html`.
+  3.  Inside this test, you will need to:
+      - Import the `TestClient`.
+      - Instantiate the `TestClient` with a (currently non-existent) `app` object from `app.main`.
+      - Use the client to make a `GET` request to the root URL (`/`).
+      - Assert that the response has a status code of `200`.
+      - Assert that the response HTML content contains the exact string `<title>AI Assistant Chatbot - Final Mockup</title>`.
+
+- **Verification Protocol (Definition of Done):**
+  - The task is considered complete once the `tests/test_main.py` file contains the specified test code.
+  - **Do not** implement the logic in `app/main.py` to make the test pass. The explicit goal of this session is to create a test that fails correctly. Running `pytest` after your work should result in a `FAILED` status.

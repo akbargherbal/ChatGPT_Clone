@@ -1,6 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
+python-lorem
 pytest
 httpx
-google-generativeai
-python-dotenv
