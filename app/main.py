@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 import os
 from app.models import ChatRequest
 
@@ -14,4 +14,4 @@ async def read_index():
 
 @app.post("/chat")
 async def chat(chat_request: ChatRequest):
-    return {"status": "ok"}
+    return HTMLResponse(content="<div>Response</div>")

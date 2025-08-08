@@ -13,3 +13,8 @@
 - **What:** Modified the chat endpoint test to assert the `Content-Type` is HTML.
 - **Why:** To create a failing test that drives the change from a JSON to an HTML response for HTMX compatibility.
 - **Files Touched:** [`tests/test_main.py`]
+### 2025-08-08 12:10
+
+- **What:** Modified the `/chat` endpoint to return an HTML response.
+- **Why:** To make the test suite pass and align with the requirement for HTMX compatibility.
+- **Files Touched:** [`app/main.py`]

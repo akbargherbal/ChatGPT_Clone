@@ -31,16 +31,17 @@ _This section is mandatory boilerplate for every run._
 
 _This section is specific to the current session._
 
-- **Context & State Analysis:** All tests are currently passing. The `/chat` endpoint correctly accepts a POST request and returns a JSON response with a 200 status code. However, the project requirements state this endpoint must return an HTML snippet for HTMX.
+- **Context & State Analysis:** The test `test_chat_endpoint_returns_success` is failing because it asserts a `Content-Type` of `text/html; charset=utf-8`, but the endpoint is currently returning `application/json`.
 
-- **This Session's Objective:** Modify the existing test `test_chat_endpoint_returns_success` to enforce the requirement that the endpoint returns HTML, thereby creating a new failing test.
+- **This Session's Objective:** Modify the `/chat` endpoint to return an HTML response, making the test suite pass.
 
 - **Task Directive:**
 
-  1.  Your sole objective is to modify the test named `test_chat_endpoint_returns_success` in the `tests/test_main.py` file.
-  2.  Add a new assertion to this test.
-  3.  The new assertion must check the `Content-Type` header of the response and verify that it is equal to `text/html; charset=utf-8`.
-  4.  **Do not modify `app/main.py`**. The purpose is only to update the test file and cause a failure.
+  1.  Your sole objective is to make the `pytest` command pass with **2 passed**.
+  2.  You will need to modify the `chat` function in `app/main.py`.
+  3.  You must import `HTMLResponse` from `fastapi.responses`.
+  4.  Change the endpoint's return statement to use `HTMLResponse`.
+  5.  For now, the content can be a simple, non-empty HTML string. For example: `return HTMLResponse(content="<div>Response</div>")`.
 
 - **Verification Protocol (Definition of Done):**
-  - The task is successfully completed when running `pytest` results in **1 passed and 1 failed**. The `test_chat_endpoint_returns_success` test is now expected to fail on the new `Content-Type` header assertion.
+  - The task is successfully completed only when running `pytest` results in **2 passed**.
