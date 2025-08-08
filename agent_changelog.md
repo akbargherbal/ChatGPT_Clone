@@ -13,3 +13,13 @@
 - **What:** Made the `create_ai_message` template function theme-aware.
 - **Why:** To make the test suite pass by dynamically applying CSS classes based on the selected model.
 - **Files Touched:** [`app/main.py`, `app/templates.py`]
+### 2025-08-08 15:00
+
+- **What:** Added a failing test to verify the chat endpoint echoes the user's message.
+- **Why:** To drive the implementation of dynamic responses via TDD.
+- **Files Touched:** [`tests/test_main.py`]
+### 2025-08-08 15:05
+
+- **What:** Modified the /chat endpoint to echo the user's input.
+- **Why:** To make the echo test pass and confirm the user input is being processed correctly.
+- **Files Touched:** [`app/main.py`]
