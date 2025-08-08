@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, HTMLResponse
 import os
 from app.models import ChatRequest
+from app.templates import create_ai_message
 
 app = FastAPI()
 
@@ -14,4 +15,6 @@ async def read_index():
 
 @app.post("/chat")
 async def chat(chat_request: ChatRequest):
-    return HTMLResponse(content="<div><p>Response</p></div>")
+    # Using the new template function to generate the response
+    ai_message_html = create_ai_message("This is a placeholder response from the AI.")
+    return HTMLResponse(content=ai_message_html)
