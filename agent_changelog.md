@@ -18,3 +18,8 @@
 - **What:** Modified the `/chat` endpoint to return an HTML response.
 - **Why:** To make the test suite pass and align with the requirement for HTMX compatibility.
 - **Files Touched:** [`app/main.py`]
+### 2025-08-08 12:15
+
+- **What:** Modified the /chat endpoint to return HTML containing a `<p>` tag.
+- **Why:** To satisfy the test requirement for structured HTML content.
+- **Files Touched:** [`app/main.py`, `tests/test_main.py`]
